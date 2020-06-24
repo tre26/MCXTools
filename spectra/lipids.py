@@ -10,4 +10,4 @@ def lipid_mu_a(wavelength):
     ws = t[t.columns[0]]
     mu = t[t.columns[1]] * 1000
     mu_a = interp1d(ws, mu)
-    return mu_a(wavelength)
+    return mu_a(wavelength*1e9)
