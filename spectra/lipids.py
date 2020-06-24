@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from scipy.interpolate import interp1d
 
 def lipid_mu_a(wavelength):
     # [1] https://omlc.org/spectra/fat/
@@ -8,4 +9,5 @@ def lipid_mu_a(wavelength):
     t = pd.read_csv(file, skiprows=6)
     ws = t[t.columns[0]]
     mu = t[t.columns[1]] * 1000
-    return mu
+    mu_a = interp1d(ws, mu)
+    return mu_a(wavelength)
