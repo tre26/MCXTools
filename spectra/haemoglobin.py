@@ -24,7 +24,7 @@ def blood_mu_a(wavelength, so2=1, haematocrit=0.45, water=True):
     t = pd.read_csv(file, skiprows=2, thousands=",")
     ws = t[t.columns[0]]
     e_hb = t[t.columns[2]] * 1000
-    mu_hb = interp1d(ws, e_hb)
+    mu_hb = interp1d(ws, e_hb, kind="cubic")
     e_hbo2 = t[t.columns[1]] * 1000
     mu_hbo2 = interp1d(ws, e_hbo2)
     # The spectra above include the water content of the blood.
@@ -39,12 +39,12 @@ def blood_mu_a(wavelength, so2=1, haematocrit=0.45, water=True):
 
 
 if __name__ == "__main__":
-    wavelengths = np.linspace(500, 1500, num=100) * 1e-9
-    for so2 in np.linspace(0, 1, num=4):
+    wavelengths = np.linspace(700, 1000, num=100) * 1e-9
+    for so2 in np.linspace(0, 1, num=2):
         plt.semilogy(1e9 * wavelengths, blood_mu_a(wavelengths, so2, water=False, haematocrit=1))
         #plt.semilogy(1e9 * wavelengths, blood_mu_a(wavelengths, so2, water=True))
     plt.semilogy(1e9 * wavelengths, melanosome_mu_a(wavelengths, 1))
-    plt.semilogy(1e9 * wavelengths, water_mu_a(wavelengths))
+    #plt.semilogy(1e9 * wavelengths, water_mu_a(wavelengths))
     plt.xlabel("Wavelength / $nm$")
     plt.ylabel(r"Absorption coefficient / $m^{-1}$")
     plt.show()
